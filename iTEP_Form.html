@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name='description' content='Submission form for the School of Education iTEP program pathway, allows students to submit their portfolios to our department'>
+    <meta name='author' content='Michael Hinojosa'>
+    <base target="_top">
+    <link rel="stylesheet" href="https://ssl.gstatic.com/docs/script/css/add-ons1.css">
+    <style>
+        html {
+            background: url('https://storage.googleapis.com/risemedialibrary-22da0ca4-2538-4387-b515-ee28f6e84b64/Building%203%20Display%20Images/Background1.jpg') no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        div#main {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        h2#form-name {
+            text-align: center;
+            font-size: 30px;
+            color: #446A59;
+        }
+
+        div#content {
+            width: 100%;
+            height: auto;
+        }
+
+        div#form-container {
+            width: 40%;
+            height: auto;
+            background-color: #fff;
+            border: #fff solid 10px;
+            margin-right: auto;
+            margin-left: auto;
+            box-shadow: #000 2px 2px 5px 2px;
+            margin-top: 50px;
+        }
+
+            div#form-container * {
+                margin-right: auto;
+                margin-left: auto;
+            }
+
+        div#inner-container {
+            width: auto;
+            height: auto;
+            padding-left: 15px;
+        }
+
+        div#output {
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        div#itep-form section {
+            display: block;
+        }
+
+            div#itep-form section input {
+                display: inline;
+            }
+
+        label {
+            font-weight: bold;
+        }
+
+        input {
+            margin-left: 10px !important;
+            margin-right: 10px !important;
+            margin-top: 10px !important;
+        }
+    </style>
+</head>
+<body>
+    <div id='main'>
+        <div id='content'>
+            <div id='form-container'>
+                <div id='inner-container'>
+                    <div id='output'>
+                        <h3>Files Successfully uploaded.</h3>
+                        <p>To upload additional files for your application, click <a href='https://script.google.com/a/macros/csumb.edu/s/AKfycbwlems2hGada_xCckLfdJwkBzJEMFV47aNtbRk3qNmDhYbPQpM/exec'>here</a></p>
+                    </div>
+                    <form id='itep-info' onsubmit='sendForm(this)'>
+                        <h2 id='form-name'>iTEP Submission Form</h2>
+                        <p>
+                            This form is for the submission of your iTEP materials. You do not need to submit all the files at once, you can submit them as you obtain them, you will recieve an email stating which files you have submitted so far.
+                            When submitting a file ensure that the checkbox next to the file you are submitting is checked off. You may submit files you have already submitted if you have a more recent version of the file. All files must be in the PDF
+                            format.
+                        </p>
+                        <h3>Basic Information</h3>
+                        <section><label>Name: <input type='text' name='user-name' required /></label></section>
+                        <section><label>Otter ID: <input type='text' name='otter-id' required /></label></section>
+                        <section><label>Phone: <input type='tel' name='phone' required /></label></section>
+                        <section><label>Email: <input type='email' name='user-email' required /></label></section>
+                        <h3>Admissions Requirements File Submissions</h3>
+                        <section><input type='checkbox' name='gpa' id='gpa-check' /><label>Transcript<input type='file' name='gpa-file' accept='.pdf' onchange='addCheckMark(this)' /></label></section>
+                        <section><input type='checkbox' name='transcript' id='transcript-check' /><label>Additional Transcripts (Not Required)<input type='file' name='transcript-file' accept='.pdf' onchange='addCheckMark(this)' /></label></section>
+                        <section><input type='checkbox' name='CBEST' id='cbest-check' /><label>Basic Education Skills<input type='file' name='cbest-file' accept='.pdf' onchange='addCheckMark(this)' /></label></section>
+                        <section><input type='checkbox' name='CSET' id='cset-check' /><label>Subject Matter Competency Verification<input type='file' name='cset-file' accept='.pdf' onchange='addCheckMark(this)' /></label></section>
+                        <section><input type='checkbox' name='clearance' id='clearance-check' /><label>Character Identification Clearance<input type='file' name='clearance-file' accept='.pdf' onchange='addCheckMark(this)' /></label></section>
+                        <section><input type='checkbox' name='disease' id='disease-check' /><label>Tuberculosis Negative Verification<input type='file' name='disease-file' accept='.pdf' onchange='addCheckMark(this)' /></label></section>
+                        <section><input type='checkbox' name='cpr' id='cpr-check' /><label>CPR Verification<input type='file' name='cpr-file' accept='.pdf' onchange='addCheckMark(this)' /></label></section>
+                        <section><input type='checkbox' name='essay' id='essay-check' /><label>Essay Submission<input type='file' name='essay-file' accept='.pdf' onchange='addCheckMark(this)' /></label></section>
+                        <input class='action' type='submit' value='Submit' />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+      // prevents default form action, allows page to load properly.
+      function preventFormSubmit() {
+        var forms = document.querySelectorAll('form');
+        for (var i = 0; i < forms.length; i++) {
+          forms[i].addEventListener('submit', function(event) {
+            event.preventDefault();
+          });
+        }
+      }
+      // add event listener to call preventFormSubmit() on page load'
+      window.addEventListener('load', preventFormSubmit);
+
+      // success handler function for form submission, hides the main form and shows an appropriate output message to the user.
+      function onSuccess(){
+         document.getElementById('itep-info').style.display = 'none';
+         document.getElementById('output').style.display = 'block';
+      }
+
+      // sends form data to server for processing on form submission.
+      function sendForm(data){
+         google.script.run.withSuccessHandler(onSuccess).gatherData(data);
+      }
+
+      // checks the checkbox for a file when a file is uploaded to the form.
+      function addCheckMark(input){
+         var name = input.name.split('-')[0] + '-check';
+         document.getElementById(name).checked = 'checked';
+      }
+    </script>
+</body>
+</html>
